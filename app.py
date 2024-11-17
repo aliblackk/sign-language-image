@@ -42,7 +42,7 @@ gdrive_url = f"https://drive.google.com/uc?id={file_id}"
 gdown.download(gdrive_url, destination, quiet=False)
 
 # Load the model
-@st.cache_resource(allow_output_mutation=True)
+@st.cache_resource()
 def load_model():
     model = CustomCNN()
     model.load_state_dict(torch.load(destination, map_location=torch.device("cpu")))
