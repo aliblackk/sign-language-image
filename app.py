@@ -76,8 +76,8 @@ if uploaded_file is not None:
         outputs = model(img_tensor)
         _, predicted = torch.max(outputs, 1)
 
-    # Map class index to labels (0 to 25)
-    class_labels = [str(i) for i in range(26)]  # Labels from "0" to "25"
+    # Map class index to labels (a for 0, b for 1, ..., z for 25)
+    class_labels = [chr(i + 97) for i in range(26)]  # 'a' to 'z'
     predicted_label = class_labels[predicted.item()]
 
     st.write(f"Prediction: **{predicted_label}**")
