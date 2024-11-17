@@ -3,7 +3,6 @@ import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
 from PIL import Image
-import numpy as np
 import gdown
 
 # Define the CustomCNN class (should match the model architecture used during training)
@@ -76,8 +75,8 @@ if uploaded_file is not None:
         outputs = model(img_tensor)
         _, predicted = torch.max(outputs, 1)
 
-    # Map class index to labels (a for 0, b for 1, ..., z for 25)
-    class_labels = [chr(i + 97) for i in range(26)]  # 'a' to 'z'
+    # Map class index to custom uppercase labels
+    class_labels = ['A', 'B', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'C', 'U', 'V', 'W', 'X', 'Y', 'Z', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
     predicted_label = class_labels[predicted.item()]
 
     st.write(f"Prediction: **{predicted_label}**")
