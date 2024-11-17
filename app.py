@@ -5,7 +5,6 @@ import torchvision.transforms as transforms
 from PIL import Image
 import gdown
 
-# Define the CustomCNN class (should match the model architecture used during training)
 class CustomCNN(nn.Module):
     def __init__(self):
         super(CustomCNN, self).__init__()
@@ -34,13 +33,11 @@ class CustomCNN(nn.Module):
 file_id = "1xjKdLtxC-GcItFJs0GwCeFy94c65cs0o"
 destination = "custom_cnn_model.pth"
 
-# Construct the Google Drive URL
 gdrive_url = f"https://drive.google.com/uc?id={file_id}"
 
 # Download the file
 gdown.download(gdrive_url, destination, quiet=False)
 
-# Load the model
 @st.cache_resource()
 def load_model():
     model = CustomCNN()
@@ -57,7 +54,6 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-# Streamlit UI
 st.title("Image Classification with Custom CNN")
 st.write("Upload an image to classify")
 
@@ -75,7 +71,6 @@ if uploaded_file is not None:
         outputs = model(img_tensor)
         _, predicted = torch.max(outputs, 1)
 
-    # Map class index to custom uppercase labels
     class_labels = ['A', 'B', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'C', 'U', 'V', 'W', 'X', 'Y', 'Z', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
     predicted_label = class_labels[predicted.item()]
 
