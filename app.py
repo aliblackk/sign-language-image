@@ -62,13 +62,11 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
     # Resize image manually with a fixed size
-    image = image.resize((100, 100))  # Resize to 300x300
+    image = image.resize((300, 300))  
     st.image(image, caption="Uploaded Image", use_column_width=False)
   
-    # Preprocess the image
-    img_tensor = transform(image).unsqueeze(0)  # Add batch dimension
+    img_tensor = transform(image).unsqueeze(0)  
     
-    # Make prediction
     with torch.no_grad():
         outputs = model(img_tensor)
         _, predicted = torch.max(outputs, 1)
