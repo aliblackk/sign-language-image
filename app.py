@@ -55,6 +55,7 @@ model = load_model()
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
 # Streamlit UI
@@ -75,8 +76,8 @@ if uploaded_file is not None:
         outputs = model(img_tensor)
         _, predicted = torch.max(outputs, 1)
 
-    # Map class index to labels (replace with your dataset's labels)
-    class_labels = [chr(i + 65) for i in range(26)]  # Example: A-Z for 26 classes
+    # Map class index to labels (0 to 25)
+    class_labels = [str(i) for i in range(26)]  # Labels from "0" to "25"
     predicted_label = class_labels[predicted.item()]
 
     st.write(f"Prediction: **{predicted_label}**")
