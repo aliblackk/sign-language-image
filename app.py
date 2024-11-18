@@ -30,8 +30,8 @@ class CustomCNN(nn.Module):
         x = self.fc2(x)
         return x
 
-file_id = "1xjKdLtxC-GcItFJs0GwCeFy94c65cs0o"
-destination = "custom_cnn_model.pth"
+file_id = "1FMZv5YOe60hHp1d1bsbJpYu8jhn3jNNc"
+destination = "custom_cnn_model1.pth"
 
 gdrive_url = f"https://drive.google.com/uc?id={file_id}"
 
