@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
 from PIL import Image
-from huggingface_hub import hf_hub_download
+import requests
 
 class CustomCNN(nn.Module):
     def __init__(self):
@@ -30,14 +30,18 @@ class CustomCNN(nn.Module):
         x = self.fc2(x)
         return x
 
-MODEL_REPO = "aliblack/sign-language"
-MODEL_FILENAME = "custom_cnn_model.pth"
-
 @st.cache_resource()
 def load_model():
-    model_path = hf_hub_download(repo_id=MODEL_REPO, filename=MODEL_FILENAME)
+    url = "https://huggingface.co/aliblack/sign-language/resolve/main/custom_cnn.pth"
+    destination = "custom_cnn.pth"
+    
+    # Download the model file if not already present
+    response = requests.get(url)
+    with open(destination, "wb") as file:
+        file.write(response.content)
+    
     model = CustomCNN()
-    model.load_state_dict(torch.load(model_path, map_location=torch.device("cpu")))
+    model.load_state_dict(torch.load(destination, map_location=torch.device("cpu")))
     model.eval()
     return model
 
