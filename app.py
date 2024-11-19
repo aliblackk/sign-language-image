@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
 from PIL import Image
-import gdown
+from huggingface_hub import hf_hub_download
 
 class CustomCNN(nn.Module):
     def __init__(self):
@@ -30,24 +30,19 @@ class CustomCNN(nn.Module):
         x = self.fc2(x)
         return x
 
-file_id = "1GIw3SrrV-UoQFeQYePNEbdA5TmnZRd8-"
-destination = "custom_cnn_model1.pth"
-
-gdrive_url = f"https://drive.google.com/uc?id={file_id}"
-
-# Download the file
-gdown.download(gdrive_url, destination, quiet=False)
+MODEL_REPO = "aliblack/sign-language"
+MODEL_FILENAME = "custom_cnn_model.pth"
 
 @st.cache_resource()
 def load_model():
+    model_path = hf_hub_download(repo_id=MODEL_REPO, filename=MODEL_FILENAME)
     model = CustomCNN()
-    model.load_state_dict(torch.load(destination, map_location=torch.device("cpu")))
+    model.load_state_dict(torch.load(model_path, map_location=torch.device("cpu")))
     model.eval()
     return model
 
 model = load_model()
 
-# Define the transforms for input images
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
