@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
 from PIL import Image
-import requests
+import gdown
 
 class CustomCNN(nn.Module):
     def __init__(self):
@@ -32,20 +32,16 @@ class CustomCNN(nn.Module):
 
 @st.cache_resource()
 def load_model():
-    url = "https://astanait-my.sharepoint.com/:u:/g/personal/220328_astanait_edu_kz/Effa29DVJ6FOh3A3lzPEvnMBLgw5uvWieaAEfC8wttIBbA?e=jP7dD2"
-    destination = "custom_cnn_model1.pth"
+    url = "https://drive.google.com/uc?id=1xjKdLtxC-GcItFJs0GwCeFy94c65cs0o"
+    destination = "custom_cnn.pth"
     
-    response = requests.get(url)
-    
-    if response.status_code == 200:
-        with open(destination, "wb") as file:
-            file.write(response.content)
-    else:
-        raise Exception(f"Failed to download model: {response.status_code}")
+    # Download the model file using gdown
+    gdown.download(url, destination, quiet=False)
     
     model = CustomCNN()
     
     try:
+        # Load the model weights from the .pth file
         model.load_state_dict(torch.load(destination, map_location=torch.device("cpu")))
     except Exception as e:
         raise Exception(f"Error loading model: {str(e)}")
@@ -55,6 +51,7 @@ def load_model():
 
 model = load_model()
 
+# Define the transforms for input images
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
