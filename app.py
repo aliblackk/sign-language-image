@@ -32,16 +32,24 @@ class CustomCNN(nn.Module):
 
 @st.cache_resource()
 def load_model():
-    url = "https://huggingface.co/aliblack/sign-language/resolve/main/custom_cnn.pth"
-    destination = "custom_cnn.pth"
+    url = "https://astanait-my.sharepoint.com/:u:/g/personal/220328_astanait_edu_kz/Effa29DVJ6FOh3A3lzPEvnMBLgw5uvWieaAEfC8wttIBbA?e=jP7dD2"
+    destination = "custom_cnn_model1.pth"
     
-    # Download the model file if not already present
     response = requests.get(url)
-    with open(destination, "wb") as file:
-        file.write(response.content)
+    
+    if response.status_code == 200:
+        with open(destination, "wb") as file:
+            file.write(response.content)
+    else:
+        raise Exception(f"Failed to download model: {response.status_code}")
     
     model = CustomCNN()
-    model.load_state_dict(torch.load(destination, map_location=torch.device("cpu")))
+    
+    try:
+        model.load_state_dict(torch.load(destination, map_location=torch.device("cpu")))
+    except Exception as e:
+        raise Exception(f"Error loading model: {str(e)}")
+    
     model.eval()
     return model
 
