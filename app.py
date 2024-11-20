@@ -32,7 +32,7 @@ class CustomCNN(nn.Module):
 
 @st.cache_resource()
 def load_model():
-    url = "https://drive.google.com/uc?id=1xjKdLtxC-GcItFJs0GwCeFy94c65cs0o"
+    url = "https://drive.google.com/uc?id=your_file"
     destination = "custom_cnn.pth"
     
     # Download the model file using gdown
